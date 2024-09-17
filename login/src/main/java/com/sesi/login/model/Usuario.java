@@ -10,12 +10,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Usuario {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idUsuario;
 	
 	@Column(nullable = false, unique = true)
 	private String nomeUsuario;
@@ -23,15 +27,57 @@ public class Usuario {
 	@Column(nullable = false)
 	private String senha;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String idUsuario;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_papeis",
-			joinColumns = @JoinColumn (name="usuario_id"),
-			inverseJoinColumns = @JoinColumn (name="papel_id")
-			)
+		joinColumns = @JoinColumn(name="usuario_id"),
+		inverseJoinColumns = @JoinColumn(name = "papel_id")
+		)
 	
 	private Set<Papel> papeis = new HashSet<>();
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public Set<Papel> getPapeis() {
+		return papeis;
+	}
+
+	public void setPapeis(Set<Papel> papeis) {
+		this.papeis = papeis;
+	}
+
+	public Usuario(Long idUsuario, String nomeUsuario, String senha, Set<Papel> papeis) {
+		super();
+		this.idUsuario = idUsuario;
+		this.nomeUsuario = nomeUsuario;
+		this.senha = senha;
+		this.papeis = papeis;
+	}
+
+	public Usuario() {
+		super();
+	}
+
+	
 }
